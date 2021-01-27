@@ -17,7 +17,7 @@ The framework includes both an exact and an approximate mining algorithm.
 ## Input Format
 The file containing the information about the nodes and the edges in the graph must comply with the following format:
 
->	v <node_id> <node_label>
+	v <node_id> <node_label>
 	v <node_id> <node_label>
 	...
 	e <node_id1> <node_id2>
@@ -71,11 +71,11 @@ Then, in the script *run.sh* you must write:
 
 1. **Run the exact algorithm**:
     
->    java -cp MANIAC.jar:lib/* it.isi.approxmni.Main dataFolder=<input_data> outputFolder=<output_data> inputFile=<file_name> frequency=<frequency_threshold> numLabels=<num_vertex_labels> preComputed=<is_search_space_precomputed> patternSize=<patternSize> isExact=true
+>    java -cp MANIAC.jar:lib/* it.isi.approxmni.Main dataFolder=<input_data> outputFolder=<output_data> inputFile=<file_name> frequency=<frequency_threshold> numLabels=<num_vertex_labels> preComputed=<is_search_space_precomputed> patternSize=<pattern_size> isExact=true
 
 2. **Run the approximate algorithm**:
 
->    java -cp MANIAC.jar:lib/* it.isi.approxmni.Main dataFolder=<input_data> outputFolder=<output_data> inputFile=<file_name> frequency=<frequency_threshold> sampleSize=<sample_size> numLabels=<num_vertex_labels> preComputed=<is_search_space_precomputed> patternSize=<patternSize> seed=<seed> failure=<failure> c=<c> isExact=false percent=<percent> 
+>    java -cp MANIAC.jar:lib/* it.isi.approxmni.Main dataFolder=<input_data> outputFolder=<output_data> inputFile=<file_name> frequency=<frequency_threshold> sampleSize=<sample_size> numLabels=<num_vertex_labels> preComputed=<is_search_space_precomputed> patternSize=<pattern_size> seed=<seed_number> failure=<failure_probability> c=<constant_c> isExact=false percent=<sample_size_is_a_percentage> 
 
 3. **Generate the pattern search space**:
  
