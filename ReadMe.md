@@ -5,6 +5,7 @@ MaNIACS is a sampling-based randomized algorithm for computing approximations of
 The output of MaNIACS comes with strong probabilistic guarantees. The quality of the approximation is obtained using the empirical Vapnik-Chervonenkis (VC) dimension, a key concept from statistical learning theory.
 In particular, given a failure probability $\delta$, a frequency threshold $$\tau$$, and a sample size $$s$$, with probability at least $$(1 - \delta)$$ over the choice of the sample $$S$$ of size $$s$$, the output of MaNIACS contains a triplet $$(P, \tilde{f}(P), \epsilon_k)$$ for every pattern $$P$$ of size $$k$$ with relative MNI frequency $$f(P) \geq \tau$$, and the triplet is such that $$|\tilde{f}(P) - f(P)| \leq \epsilon_k$$.
 MaNIACS leverages properties of the frequency function to aggressively prune the pattern search space, and thus to reduce the time spent in exploring subspaces containing no frequent patterns. 
+<a href="https://www.codecogs.com/eqnedit.php?latex=|\tilde{f}(P)&space;-&space;f(P)|&space;\leq&space;\epsilon_k" target="_blank"><img src="https://latex.codecogs.com/gif.latex?|\tilde{f}(P)&space;-&space;f(P)|&space;\leq&space;\epsilon_k" title="|\tilde{f}(P) - f(P)| \leq \epsilon_k" /></a>
 The framework includes both an exact and an approximate mining algorithm.
 
 ## Content
