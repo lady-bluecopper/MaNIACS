@@ -18,11 +18,11 @@ The framework includes both an exact and an approximate mining algorithm.
 The file containing the information about the nodes and the edges in the graph must comply with the following format:
 
 >	v <node_id> <node_label>
->	v <node_id> <node_label>
->	...
->	e <node_id1> <node_id2>
->	e <node_id1> <node_id2>
->	...
+	v <node_id> <node_label>
+	...
+	e <node_id1> <node_id2>
+	e <node_id1> <node_id2>
+	...
 
 The file must first list all the graph nodes in ascending order of id (lines starting with the letter *v*), and then all the edges (lines starting with the letter *e*).  Ids and labels must be integers.
 The filename must have extension *.lg*.
