@@ -153,9 +153,10 @@ public class EmpiricalVC {
             }
             labelEVC.put(tr.getA(), Math.min(labelEVC.get(tr.getA()), ubd));
         }
-        double d = Collections.max(labelEVC.values());
-        System.out.print("VC: " + d + " ");
-        return d;
+        if (labelEVC.isEmpty()) {
+            return 0;
+        }
+        return Collections.max(labelEVC.values());
     }
 
     private static int getEVCForLabel(Collection<Map.Entry<Integer, Integer>> supports, Set<BitSet> images) {
