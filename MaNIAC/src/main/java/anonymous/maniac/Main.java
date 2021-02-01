@@ -80,7 +80,8 @@ public class Main {
         watch.start();
         Map<Integer, Integer> sample = getSample(graph);
         Map<Integer, Integer> inverseMap = inverseMapping(sample);
-        Map<Integer, Double> nodeLabelFrequencies = graph.getNodeLabelFrequencies(sample.keySet());
+        double epsilon = EmpiricalVC.getEpsilon(1);
+        Map<Integer, Double> nodeLabelFrequencies = graph.getNodeLabelFrequencies(sample.keySet(), epsilon);
         if (nodeLabelFrequencies.isEmpty()) {
             return new ArrayList<>();
         }
@@ -124,7 +125,11 @@ public class Main {
         double epsilon = 0.;
         if (!Settings.isExact) {
             epsilon = EmpiricalVC.getEpsilonLayer(lattice.getLayer(0), T, false);
-            System.out.println("Initial Epsilon:= " + epsilon);
+            Pair<Double, List<JBlissPattern>> p = updateLattice(lattice, 0, T);
+            output.add(p);
+            System.out.println("Initial Epsilon:= " + p.getA());
+        } else {
+            output.add(new Pair<>(0.,lattice.getFrequentPatterns(Settings.frequency, 1)));
         }
         int layer = 1;
         while (layer < Settings.patternSize && lattice.isLastLayerNotEmpty(layer - 1)) {

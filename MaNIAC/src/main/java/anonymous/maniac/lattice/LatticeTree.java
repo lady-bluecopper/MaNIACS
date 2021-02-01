@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 
 public class LatticeTree {
 
-    private List<List<Orbit>> lattice; // lattice tree
+        private List<List<Orbit>> lattice; // lattice tree
     private HashMap<Integer, JBlissPattern> patterns; // patterns discovered so far
     private HashMap<Integer, Pair<Integer, Integer>> nodes; // (i,j) position of orbit node in the lattice
     private HashSet<String> frequentEdges;
@@ -190,6 +190,12 @@ public class LatticeTree {
                     return thisPattern.frequency() >= Settings.frequency - epsilon 
                         && thisPattern.getNumAutos() == thisPattern.getOrbits().size();
                 }).collect(Collectors.toList());
+//        newLayer.stream().forEach(b -> { 
+//            for (int parent : b.getParents()) {
+//                Orbit porb = getNode(parent);
+//                porb.addChild(b.getId());
+//            }
+//        });
         Collections.sort(newLayer,
                 (Orbit o1, Orbit o2) -> Integer.compare(orbitBitSetMap.get(o1.getId()).cardinality(), orbitBitSetMap.get(o2.getId()).cardinality()));
         for (int i = 0; i < newLayer.size(); i++) {
@@ -197,6 +203,7 @@ public class LatticeTree {
         }
         // add layer to the tree
         addLayer(newLayer);
+        // return means+
         return epsilon;
     }    
     
@@ -409,7 +416,7 @@ public class LatticeTree {
     private void earlyPruning(HashMap<Integer, BitSet> T, double epsilon, int layer) {
         for (JBlissPattern p : patterns.values()) {
             if (p.getNumberOfVertices() == layer + 1) {
-                if (p.frequency() < Settings.frequency - epsilon || p.getNumAutos() != p.getOrbits().size()) {
+                if (p.frequency() < Settings.frequency - epsilon) {
                     killPatternAndOrbits(p.getId());
                     continue;
                 }
@@ -657,12 +664,6 @@ public class LatticeTree {
 
     public int getNumPatterns() {
         return patterns.size();
-    }
-    
-    public List<JBlissPattern> getFrequentPatterns(double tau) {
-        return patterns.values().parallelStream()
-                .filter(p -> p.frequency() >= tau && p.frequency() != Integer.MAX_VALUE && p.getNumberOfEdges() > 0)
-                .collect(Collectors.toList());
     }
     
     public List<JBlissPattern> getFrequentPatterns(double tau, int size) {

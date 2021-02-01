@@ -377,7 +377,7 @@ public class JBlissPattern implements Serializable {
                 this.edges.toString() + " " +
                 "P=" + this.parents.toString() + " " +
                 "O=" + this.orbits.toString() + " "
-                );
+                );         
     }
     
     @Override

@@ -2,9 +2,11 @@ package anonymous.maniac.vc;
 
 import anonymous.maniac.domain.Orbit;
 import anonymous.maniac.domain.Pair;
+import anonymous.maniac.domain.Triplet;
 import anonymous.maniac.utils.Settings;
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -40,7 +42,7 @@ public class EmpiricalVC {
                     return new Pair<Integer, List<Integer>>(Math.min(V.get(0), floorLog2(V.size() + 1)), V);
                 })
                 .collect(Collectors.toList());
-        Collections.sort(C, (Pair<Integer, List<Integer>> t1, Pair<Integer, List<Integer>> t2) 
+        Collections.sort(C, (Pair<Integer, List<Integer>> t1, Pair<Integer, List<Integer>> t2)
                 -> -Integer.compare(t1.getA(), t2.getA()));
         double d = 0;
         for (int i = 0; i < C.size(); i++) {
@@ -77,24 +79,109 @@ public class EmpiricalVC {
         return w;
     }
 
-    public static double getEmpiricalFreq(double d) {
-        double epsilon = getEpsilon(d);
-        System.out.println(" EPSILON: " + epsilon);
-        return Settings.frequency - epsilon / 2;
-    }
-    
-    public static double getEpsilonLayer(List<Orbit> layer, HashMap<Integer, BitSet> T, boolean isUB) {
+    public static double getEpsilonLayer_(List<Orbit> layer, HashMap<Integer, BitSet> T, boolean isUB) {
         double d = computeVCLayer(layer, T, isUB);
         double epsilon = getEpsilon(d);
         return epsilon;
     }
 
-    private static double getEpsilon(double d) {
+    public static double getEpsilonLayer(List<Orbit> layer, HashMap<Integer, BitSet> T, boolean isUB) {
+        double d = computeEVC(layer, T, isUB);
+        double epsilon = getEpsilon(d);
+        return epsilon;
+    }
+
+    public static double getEpsilon(double d) {
         return Math.sqrt(Settings.c * (d + Math.log(Settings.patternSize / Settings.failure)) / Settings.sampleSize);
     }
-    
+
     private static int floorLog2(double x) {
-        return (int)Math.floor(Math.log(x)/Math.log(2.0) + 1e-10);
+        return (int) Math.floor(Math.log(x) / Math.log(2.0) + 1e-10);
+    }
+
+    public static double computeEVC(List<Orbit> layer, HashMap<Integer, BitSet> T, boolean isUB) {
+        Map<Integer, Map<Integer, Integer>> supports = new HashMap<>();
+        Map<Integer, Set<BitSet>> images = new HashMap<>();
+        Map<Integer, List<Integer>> supportUBs = new HashMap();
+        Map<Integer, Integer> labelEVC = new HashMap<>();
+        Map<Integer, Integer> numOrbitsPerLayer = new HashMap<>();
+
+        for (Orbit o : layer) {
+            if (!o.isDead()) {
+                int markedLabel = o.getMarkedNodeLabel();
+                numOrbitsPerLayer.put(markedLabel, numOrbitsPerLayer.getOrDefault(markedLabel, 0) + 1);
+                Map<Integer, Integer> thisLabelMap = supports.getOrDefault(markedLabel, new HashMap<>());
+                for (int v = T.get(o.getId()).nextSetBit(0); v >= 0; v = T.get(o.getId()).nextSetBit(v + 1)) {
+                    thisLabelMap.put(v, thisLabelMap.getOrDefault(v, 0) + 1);
+                }
+                supports.put(markedLabel, thisLabelMap);
+                Set<BitSet> I = images.getOrDefault(markedLabel, new HashSet<>());
+                if (isUB || !I.contains(T.get(o.getId()))) {
+                    I.add(T.get(o.getId()));
+                    images.put(markedLabel, I);
+                    List<Integer> V = supportUBs.getOrDefault(markedLabel, new ArrayList<>());
+                    V.add(T.get(o.getId()).cardinality());
+                    supportUBs.put(markedLabel, V);
+                }
+            }
+        }
+        supports.keySet().forEach(label ->
+            labelEVC.put(label, getEVCForLabel(supports.get(label).entrySet(), images.get(label))));
+        List<Triplet<Integer, Integer, List<Integer>>> C = supportUBs.entrySet().stream()
+                .filter(s -> !s.getValue().isEmpty())
+                .map(e -> {
+                    List<Integer> V = e.getValue();
+                    Collections.sort(V, (Integer o1, Integer o2) -> -Integer.compare(o1, o2));
+                    return new Triplet<Integer, Integer, List<Integer>>(e.getKey(), Math.min(V.get(0), floorLog2(V.size() + 1)), V);
+                })
+                .collect(Collectors.toList());
+        Collections.sort(C, (Triplet<Integer, Integer, List<Integer>> t1, Triplet<Integer, Integer, List<Integer>> t2)
+                -> -Integer.compare(t1.getB(), t2.getB()));
+        for (int i = 0; i < C.size(); i++) {
+            Triplet<Integer, Integer, List<Integer>> tr = C.get(i);
+            int ubd = tr.getB();
+            List<Integer> V = tr.getC();
+            List<Integer> w = initializeVector(ubd);
+            int j = 0;
+            while (j < V.size() && j < w.size()) {
+                if (V.get(j) < w.get(j)) {
+                    ubd -= 1;
+                    w = initializeVector(ubd);
+                } else {
+                    j += 1;
+                }
+            }
+            labelEVC.put(tr.getA(), Math.min(labelEVC.get(tr.getA()), ubd));
+        }
+        double d = Collections.max(labelEVC.values());
+        System.out.print("VC: " + d + " ");
+        return d;
+    }
+
+    private static int getEVCForLabel(Collection<Map.Entry<Integer, Integer>> supports, Set<BitSet> images) {
+        List<Map.Entry<Integer, Integer>> counts = new ArrayList<>(supports);
+        Collections.sort(counts, (Map.Entry<Integer, Integer> i1, Map.Entry<Integer, Integer> i2)
+                -> -Integer.compare(i1.getValue(), i2.getValue()));
+        int this_d = floorLog2(counts.get(0).getValue()) + 1;
+        while (this_d > 1) {
+            if (counts.size() < this_d || counts.get(this_d - 1).getValue() < Math.pow(2, this_d - 1)) {
+                this_d -= 1;
+            } else {
+                for (BitSet b : images) {
+                    int sup = 0;
+                    for (Map.Entry<Integer, Integer> e : counts) {
+                        if (b.get(e.getKey()) && e.getValue() >= Math.pow(2, this_d - 1)) {
+                            sup += 1;
+                            if (sup >= this_d) {
+                                return this_d;
+                            }
+                        }
+                    }
+                }
+                this_d -= 1;
+            }
+        }
+        return this_d;
     }
 
 }

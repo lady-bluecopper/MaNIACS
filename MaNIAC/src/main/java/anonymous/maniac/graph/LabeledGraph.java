@@ -7,10 +7,8 @@ import anonymous.maniac.domain.Node;
 import anonymous.maniac.utils.Settings;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -29,17 +27,10 @@ public class LabeledGraph {
         return nodes.size();
     }
     
-    public Map<Integer, Double> getNodeLabelFrequencies(Collection<Integer> sample) {
+    public Map<Integer, Double> getNodeLabelFrequencies(Collection<Integer> sample, double epsilon) {
         HashMap<Integer, Double> freq = new HashMap();
         sample.forEach(node -> freq.put(getNodeLabel(node), freq.getOrDefault(getNodeLabel(node), 0.) + 1./sample.size()));
-        return freq.entrySet().stream().filter(e -> e.getValue() >= Settings.frequency).collect(Collectors.toMap(i->i.getKey(), i->i.getValue()));
-    }
-    
-    public HashMap<Integer, Double> getNodeLabelFrequencies(int sampleSize) {
-        Set<Integer> sample = getSample(sampleSize);
-        HashMap<Integer, Double> freq = new HashMap();
-        sample.forEach(node -> freq.put(getNodeLabel(node), freq.getOrDefault(getNodeLabel(node), 0.) + 1./sample.size()));
-        return freq;
+        return freq.entrySet().stream().filter(e -> e.getValue() >= Settings.frequency - epsilon).collect(Collectors.toMap(i->i.getKey(), i->i.getValue()));
     }
     
     public void initialize(List<Edge> edges) {
@@ -63,18 +54,6 @@ public class LabeledGraph {
     
     public Set<Integer> getNodeIDs() {
         return nodes.stream().map(n -> n.getIndex()).collect(Collectors.toSet());
-    }
-    
-    private Set<Integer> getSample(int sampleSize) {
-        if (sampleSize == numberOfNodes()) {
-            return getNodeIDs();
-        }
-        Set<Integer> sample = new HashSet<>();
-        Random rand = new Random(Settings.seed);
-        while (sample.size() < sampleSize) {
-            sample.add(rand.nextInt(numberOfNodes()));
-        }
-        return sample;
     }
     
 }
