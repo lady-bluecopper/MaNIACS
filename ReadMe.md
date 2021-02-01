@@ -39,15 +39,15 @@ The value of each parameter used by MaNIACS must be set in the configuration fil
     * *output_data*: path to the folder to store the results.
     * *patternSize*: maximum number of vertices of the patterns to mine. 
     * *seeds*: space-separated list of seeds to use to extract a random sample of graph vertices. MaNIACS will run once for each seed value.
-    * *failure*: failure probability used to compute the epsilon values. This value is usually set to 0.1.  dispersion value, as indicated in the name of the weight file.
+    * *failure*: failure probability used to compute the epsilon values. This value is usually set to 0.1.
     * *c*: constant used to compute the epsilon values. This value is usually set to 0.5.
     * *percent*: boolean indicating whether the sample size specified is a percentage of the total number of vertices in the graph or the number of vertices to sample.
 
 * Dataset-related settings:
     * Dataset names: names of the graph files.
     * Default values: comma-separated list of default values and information about the graph, i.e., default frequency threshold, default sample size, number of distinct vertex labels, boolean indicating if the pattern search space is pre-generated. 
-    * Frequencies: comma-separated list of frequency thresholds
-    * Samples: comma-separated list of sample sizes
+    * Frequencies: comma-separated list of frequency thresholds.
+    * Samples: comma-separated list of sample sizes.
     * Experimental flags: test to perform among (1) test multiple sample sizes with default frequency threshold, (2) test multiple frequency thresholds with default sample size, (3) run the exact algorithm for multiple frequency thresholds, and (4) generate the pattern search space for the number of vertex labels of this graph.
 
 Then, the arrays that store the names, the frequencies, the sample sizes, and the experimental flags of each dataset to test must be declared at the beginning of the script *run.sh*. For example, if in the configuration file *config.cfg* you wrote:
