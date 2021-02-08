@@ -8,9 +8,10 @@ MaNIACS leverages properties of the frequency function to aggressively prune the
 The framework includes both an exact and an approximate mining algorithm.
 
 ## Content
-    run.sh
-    config.cfg
-    MaNIAC/
+    run.sh .......... script for running the algorithm
+    config.cfg ...... configuration file
+    MaNIAC/ ......... source files
+    results.ipynb ... Jupyter Notebook with the results of the experimental evaluation described in the paper 
 
 ## Requirements
     Java JRE v1.8.0
