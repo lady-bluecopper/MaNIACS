@@ -11,6 +11,7 @@ The framework includes both an exact and an approximate mining algorithm.
     run.sh .......... script for running the algorithm
     config.cfg ...... configuration file
     MaNIAC/ ......... source files
+    datasets/ ....... some of the datasets used in the paper
     results.ipynb ... Jupyter Notebook with the results of the experimental evaluation described in the paper 
 
 ## Requirements
