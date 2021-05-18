@@ -74,7 +74,7 @@ do
 				echo "Running command ..."
 				echo "$JVM $MANIAC_jar dataFolder=${input_data} outputFolder=$OUTPUT inputFile=${dataset}.lg frequency=${defaults[0]} sampleSize=$s numLabels=${defaults[2]} preComputed=${defaults[3]} patternSize=$patternSize seed=$seed failure=$failure c=$c isExact=false percent=$percent"
 				echo "---- `date`"
-				$JVM $JVM $MANIAC_jar dataFolder=${input_data} outputFolder=$OUTPUT inputFile=${dataset}.lg frequency=${defaults[0]} sampleSize=$s numLabels=${defaults[2]} preComputed=${defaults[3]} patternSize=$patternSize seed=$seed failure=$failure c=$c isExact=false percent=$percent
+				$JVM $MANIAC_jar dataFolder=${input_data} outputFolder=$OUTPUT inputFile=${dataset}.lg frequency=${defaults[0]} sampleSize=$s numLabels=${defaults[2]} preComputed=${defaults[3]} patternSize=$patternSize seed=$seed failure=$failure c=$c isExact=false percent=$percent
 			done
 		done
 	fi
@@ -96,7 +96,7 @@ do
 				echo "Running command ..."
 				echo "$JVM $MANIAC_jar dataFolder=${input_data} outputFolder=$OUTPUT inputFile=${dataset}.lg frequency=$freq sampleSize=${defaults[1]} numLabels=${defaults[2]} preComputed=${defaults[3]} patternSize=$patternSize seed=$seed failure=$failure c=$c isExact=false percent=$percent"
 				echo "---- `date`"
-				$JVM $JVM $MANIAC_jar dataFolder=${input_data} outputFolder=$OUTPUT inputFile=${dataset}.lg frequency=$freq sampleSize=${defaults[1]} numLabels=${defaults[2]} preComputed=${defaults[3]} patternSize=$patternSize seed=$seed failure=$failure c=$c isExact=false percent=$percent
+				$JVM $MANIAC_jar dataFolder=${input_data} outputFolder=$OUTPUT inputFile=${dataset}.lg frequency=$freq sampleSize=${defaults[1]} numLabels=${defaults[2]} preComputed=${defaults[3]} patternSize=$patternSize seed=$seed failure=$failure c=$c isExact=false percent=$percent
 			done
 		done
 	fi
@@ -116,7 +116,7 @@ do
 			echo "Running command ..."
 			echo "$JVM $MANIAC_jar dataFolder=${input_data} outputFolder=$OUTPUT inputFile=${dataset}.lg frequency=$freq numLabels=${defaults[2]} preComputed=${defaults[3]} patternSize=$patternSize isExact=true"
 			echo "---- `date`"
-			$JVM $JVM $MANIAC_jar dataFolder=${input_data} outputFolder=$OUTPUT inputFile=${dataset}.lg frequency=$freq numLabels=${defaults[2]} preComputed=${defaults[3]} patternSize=$patternSize isExact=true
+			$JVM $MANIAC_jar dataFolder=${input_data} outputFolder=$OUTPUT inputFile=${dataset}.lg frequency=$freq numLabels=${defaults[2]} preComputed=${defaults[3]} patternSize=$patternSize isExact=true
 		done
 	fi
 
