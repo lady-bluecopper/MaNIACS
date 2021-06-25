@@ -19,6 +19,8 @@ preComputed=false
 isExact=false
 
 
+#sampleSize, seed, failure, c, percent为随机算法需要的参数，非随机不需要这些参数并将isExact设为true
+#
 OUTPUT="$input_data/lattices/"
 mkdir -p $OUTPUT
 $JVM $lattice_generation_jar \
