@@ -5,8 +5,8 @@ DEPENDENCY_JAR=MaNIAC-1.0-jar-with-dependencies.jar
 MANIAC_MAIN=anonymous.maniac.Main
 LATTICE_MAIN=anonymous.maniac.lattice.LatticeGeneration
 
-MANIAC_CMD=$PACKAGE_PATH/$MANIAC_JAR:$PACKAGE_PATH/$DEPENDENCY_JAR $MANIAC_MAIN
-LATTICE_CMD=
+MANIAC_CMD="$PACKAGE_PATH/$MANIAC_JAR:$PACKAGE_PATH/$DEPENDENCY_JAR $MANIAC_MAIN"
+LATTICE_CMD="$PACKAGE_PATH/$MANIAC_JAR:$PACKAGE_PATH/$DEPENDENCY_JAR $LATTICE_MAIN"
 
 input_data='./datasets/'
 output_data='./output/'
@@ -29,13 +29,13 @@ isExact=false
 #
 OUTPUT="$input_data/lattices/"
 mkdir -p $OUTPUT
-$JVM $lattice_generation_jar \
+$JVM $LATTICE_CMD \
 	dataFolder=${input_data} \
 	patternSize=${patternSize} \
 	numLabels=${numLabels} \
 
 
-$JVM $MANIAC_jar \
+$JVM $MANIAC_CMD \
 	dataFolder=${input_data} \
 	outputFolder=${output_data} \
 	inputFile=${dataset}.lg \
