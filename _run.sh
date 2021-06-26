@@ -10,17 +10,20 @@ LATTICE_CMD="$PACKAGE_PATH/$MANIAC_JAR:$PACKAGE_PATH/$DEPENDENCY_JAR $LATTICE_MA
 
 input_data='/data/not_backed_up/shared/graphs/'
 output_data='./output/'
-dataset=mico
 
-patternSize=5
+dataset=mico
+freqs=(0.001 0.005 0.01 0.05)
+patternSizes=(3 4 5)
+
+#patternSize=5
 seed=1
 failure=0.1
 c=0.5
 percent=false
 
-frequency=0.001
+#frequency=0.001
 sampleSize=1700
-numLabels=6
+numLabels=29
 preComputed=false
 
 # run lattice generation
@@ -54,15 +57,22 @@ fi
 
 #Run the exact algorithm:
 if true; then
-$JVM $MANIAC_CMD \
-	dataFolder=${input_data} \
-	outputFolder=${output_data} \
-	inputFile=${dataset}.lg \
-	frequency=${frequency} \
-	numLabels=${numLabels} \
-	preComputed=${preComputed} \
-	patternSize=$patternSize \
-	isExact=true
+
+for patternSize in ${patternSizes[*]}
+do
+	for freq in ${freqs[*]}
+	do
+		$JVM $MANIAC_CMD \
+			dataFolder=${input_data} \
+			outputFolder=${output_data} \
+			inputFile=${dataset}.lg \
+			frequency=$freq \
+			numLabels=${numLabels} \
+			preComputed=${preComputed} \
+			patternSize=$patternSize \
+			isExact=true
+	done
+done
 fi
 
 
