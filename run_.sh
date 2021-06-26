@@ -1,6 +1,12 @@
 JVM='java -Xmx200g -XX:-UseGCOverheadLimit -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:NewSize=6g -XX:+CMSParallelRemarkEnabled -XX:+ParallelRefProcEnabled -XX:+CMSClassUnloadingEnabled -cp'
-MANIAC_jar='./MANIAC/target/MANIAC-1.0.jar:./MANIAC/target/MaNIAC-1.0-jar-with-dependencies.jar anonymous.maniac.Main'
-lattice_generation_jar='./MANIAC/target/MANIAC-1.0.jar:./MANIAC/target/MaNIAC-1.0-jar-with-dependencies.jar anonymous.maniac.lattice.LatticeGeneration'
+PACKAGE_PATH=./MaNIAC/target/
+MANIAC_jar=MaNIAC-1.0.jar
+lattice_generation_jar=MaNIAC-1.0-jar-with-dependencies.jar
+MANIAC_MAIN=anonymous.maniac.Main
+lattice_generation_MAIN=anonymous.maniac.lattice.LatticeGeneration
+
+MANIAC_CMD='./MaNIAC/target/*.jar anonymous.maniac.Main'
+lattice_generation_CMD='./MaNIAC/target/*.jar anonymous.maniac.lattice.LatticeGeneration'
 
 input_data='./datasets/'
 output_data='./output/'
