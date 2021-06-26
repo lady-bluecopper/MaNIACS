@@ -12,8 +12,8 @@ input_data='./datasets/'
 output_data='./output/'
 dataset=citeseer
 
-patternSize=3
-seed=11
+patternSize=5
+seed=1
 failure=0.1
 c=0.5
 percent=false
@@ -25,6 +25,7 @@ preComputed=false
 isExact=false
 
 
+if false; then
 #sampleSize, seed, failure, c, percent为随机算法需要的参数，非随机不需要这些参数并将isExact设为true
 #
 OUTPUT="$input_data/lattices/"
@@ -32,9 +33,10 @@ mkdir -p $OUTPUT
 $JVM $LATTICE_CMD \
 	dataFolder=${input_data} \
 	patternSize=${patternSize} \
-	numLabels=${numLabels} \
+	numLabels=${numLabels}
+fi
 
-
+if false; then
 $JVM $MANIAC_CMD \
 	dataFolder=${input_data} \
 	outputFolder=${output_data} \
@@ -49,3 +51,18 @@ $JVM $MANIAC_CMD \
 	numLabels=${numLabels} \
 	preComputed=${preComputed} \
 	isExact=${isExact} 
+fi
+
+if true; then
+$JVM $MANIAC_CMD \
+	dataFolder=${input_data} \
+	outputFolder=${output_data} \
+	inputFile=${dataset}.lg \
+	frequency=${frequency} \
+	numLabels=${numLabels} \
+	preComputed=${preComputed} \
+	patternSize=$patternSize \
+	isExact=true
+fi
+
+
