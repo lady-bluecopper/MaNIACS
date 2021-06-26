@@ -8,9 +8,9 @@ LATTICE_MAIN=anonymous.maniac.lattice.LatticeGeneration
 MANIAC_CMD="$PACKAGE_PATH/$MANIAC_JAR:$PACKAGE_PATH/$DEPENDENCY_JAR $MANIAC_MAIN"
 LATTICE_CMD="$PACKAGE_PATH/$MANIAC_JAR:$PACKAGE_PATH/$DEPENDENCY_JAR $LATTICE_MAIN"
 
-input_data='./datasets/'
+input_data='/data/not_backed_up/shared/graphs/'
 output_data='./output/'
-dataset=citeseer
+dataset=mico
 
 patternSize=5
 seed=1
@@ -18,16 +18,14 @@ failure=0.1
 c=0.5
 percent=false
 
-frequency=0.19
+frequency=0.001
 sampleSize=1700
 numLabels=6
 preComputed=false
-isExact=false
 
-
-if false; then
+# run lattice generation
 #sampleSize, seed, failure, c, percent为随机算法需要的参数，非随机不需要这些参数并将isExact设为true
-#
+if false; then
 OUTPUT="$input_data/lattices/"
 mkdir -p $OUTPUT
 $JVM $LATTICE_CMD \
@@ -36,6 +34,7 @@ $JVM $LATTICE_CMD \
 	numLabels=${numLabels}
 fi
 
+# run approximate algorithm
 if false; then
 $JVM $MANIAC_CMD \
 	dataFolder=${input_data} \
@@ -50,9 +49,10 @@ $JVM $MANIAC_CMD \
 	sampleSize=${sampleSize} \
 	numLabels=${numLabels} \
 	preComputed=${preComputed} \
-	isExact=${isExact} 
+	isExact=false 
 fi
 
+#Run the exact algorithm:
 if true; then
 $JVM $MANIAC_CMD \
 	dataFolder=${input_data} \
