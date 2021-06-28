@@ -8,12 +8,12 @@ LATTICE_MAIN=anonymous.maniac.lattice.LatticeGeneration
 MANIAC_CMD="$PACKAGE_PATH/$MANIAC_JAR:$PACKAGE_PATH/$DEPENDENCY_JAR $MANIAC_MAIN"
 LATTICE_CMD="$PACKAGE_PATH/$MANIAC_JAR:$PACKAGE_PATH/$DEPENDENCY_JAR $LATTICE_MAIN"
 
-input_data='/data/not_backed_up/shared/graphs/'
+input_data='./datasets/'
 output_data='./output/'
 
-dataset=mico
-freqs=(0.001 0.005 0.01 0.05)
-patternSizes=(3 4 5)
+dataset=citeseer
+freqs=(0.0000001)
+patternSizes=(5)
 
 #patternSize=5
 seed=1
