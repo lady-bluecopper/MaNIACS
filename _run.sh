@@ -12,8 +12,8 @@ input_data='./datasets/'
 output_data='./output/'
 
 dataset=citeseer
-freqs=(0.0000001)
-patternSizes=(5)
+freqs=(0.001)
+patternSizes=(4)
 
 #patternSize=5
 seed=1
