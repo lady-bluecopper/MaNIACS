@@ -63,18 +63,21 @@ do
 		echo '     Varying Sample Size 	   '
 		echo '-----------------------------'
 
-		OUTPUT="$output_data/samples/"
-		mkdir -p $OUTPUT
-
 		samples=(`echo ${test_samples[${dataset}]}|tr "," "\n"`)
+
 		for seed in ${seeds[*]}
 		do
-			for s in ${samples[*]}
-			do
-				echo "Running command ..."
-				echo "$JVM $MANIAC_jar dataFolder=${input_data} outputFolder=$OUTPUT inputFile=${dataset}.lg frequency=${defaults[0]} sampleSize=$s numLabels=${defaults[2]} preComputed=${defaults[3]} patternSize=$patternSize seed=$seed failure=$failure c=$c isExact=false percent=$percent"
-				echo "---- `date`"
-				$JVM $JVM $MANIAC_jar dataFolder=${input_data} outputFolder=$OUTPUT inputFile=${dataset}.lg frequency=${defaults[0]} sampleSize=$s numLabels=${defaults[2]} preComputed=${defaults[3]} patternSize=$patternSize seed=$seed failure=$failure c=$c isExact=false percent=$percent
+			for alpha in ${alphas[*]}
+            do
+				OUTPUT="$output_data/alpha_$alpha/"
+                mkdir -p $OUTPUT
+				for s in ${samples[*]}
+				do
+					echo "Running command ..."
+					echo "$JVM $MANIAC_jar dataFolder=${input_data} outputFolder=$OUTPUT inputFile=${dataset}.lg frequency=${defaults[0]} sampleSize=$s patternSize=$patternSize seed=$seed failure=$failure c=$c isExact=false percent=$percent alpha=$alpha"
+					echo "---- `date`"
+					$JVM $MANIAC_jar dataFolder=${input_data} outputFolder=$OUTPUT inputFile=${dataset}.lg frequency=${defaults[0]} sampleSize=$s patternSize=$patternSize seed=$seed failure=$failure c=$c isExact=false percent=$percent alpha=$alpha
+				done
 			done
 		done
 	fi
@@ -84,19 +87,21 @@ do
 		echo '      Varying Frequency 	   '
 		echo '-----------------------------'
 
-		OUTPUT="$output_data/frequency/"
-		mkdir -p $OUTPUT
-
 		freqs=(`echo ${test_freqs[${dataset}]}|tr "," "\n"`)
 
 		for seed in ${seeds[*]}
 		do
-			for freq in ${freqs[*]}
-			do
-				echo "Running command ..."
-				echo "$JVM $MANIAC_jar dataFolder=${input_data} outputFolder=$OUTPUT inputFile=${dataset}.lg frequency=$freq sampleSize=${defaults[1]} numLabels=${defaults[2]} preComputed=${defaults[3]} patternSize=$patternSize seed=$seed failure=$failure c=$c isExact=false percent=$percent"
-				echo "---- `date`"
-				$JVM $JVM $MANIAC_jar dataFolder=${input_data} outputFolder=$OUTPUT inputFile=${dataset}.lg frequency=$freq sampleSize=${defaults[1]} numLabels=${defaults[2]} preComputed=${defaults[3]} patternSize=$patternSize seed=$seed failure=$failure c=$c isExact=false percent=$percent
+			for alpha in ${alphas[*]}
+            do
+            	OUTPUT="$output_data/alpha_$alpha/"
+                mkdir -p $OUTPUT
+				for freq in ${freqs[*]}
+				do
+					echo "Running command ..."
+					echo "$JVM $MANIAC_jar dataFolder=${input_data} outputFolder=$OUTPUT inputFile=${dataset}.lg frequency=$freq sampleSize=${defaults[1]} patternSize=$patternSize seed=$seed failure=$failure c=$c isExact=false percent=$percent alpha=$alpha"
+					echo "---- `date`"
+					$JVM $MANIAC_jar dataFolder=${input_data} outputFolder=$OUTPUT inputFile=${dataset}.lg frequency=$freq sampleSize=${defaults[1]} patternSize=$patternSize seed=$seed failure=$failure c=$c isExact=false percent=$percent alpha=$alpha
+				done
 			done
 		done
 	fi
@@ -114,24 +119,10 @@ do
 		for freq in ${freqs[*]}
 		do
 			echo "Running command ..."
-			echo "$JVM $MANIAC_jar dataFolder=${input_data} outputFolder=$OUTPUT inputFile=${dataset}.lg frequency=$freq numLabels=${defaults[2]} preComputed=${defaults[3]} patternSize=$patternSize isExact=true"
+			echo "$JVM $MANIAC_jar dataFolder=${input_data} outputFolder=$OUTPUT inputFile=${dataset}.lg frequency=$freq patternSize=$patternSize isExact=true"
 			echo "---- `date`"
-			$JVM $JVM $MANIAC_jar dataFolder=${input_data} outputFolder=$OUTPUT inputFile=${dataset}.lg frequency=$freq numLabels=${defaults[2]} preComputed=${defaults[3]} patternSize=$patternSize isExact=true
+			$JVM $MANIAC_jar dataFolder=${input_data} outputFolder=$OUTPUT inputFile=${dataset}.lg frequency=$freq patternSize=$patternSize isExact=true
 		done
-	fi
-
-	if [[ ${experiments[3]} -eq "1" ]]; then
-		echo '-----------------------------------------'
-		echo '    	     Generate Lattice              '
-		echo '-----------------------------------------'
-
-		OUTPUT="$input_data/lattices/"
-		mkdir -p $OUTPUT
-
-		echo "Running command ..."
-		echo "$JVM $lattice_generation_jar dataFolder=${input_data} patternSize=$patternSize numLabels=${defaults[2]}"
-		echo "---- `date`"
-		$JVM $lattice_generation_jar dataFolder=${input_data} patternSize=$patternSize numLabels=${defaults[2]}
 	fi
 done
 echo 'Terminated.'
