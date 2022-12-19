@@ -13,7 +13,8 @@ Given an initial sample size *s* and a parameter alpha *a*, the sample size used
     run.sh .......... script for running the algorithm
     config.cfg ...... configuration file
     src/ ......... source files
-    results.ipynb ... Jupyter Notebook with the results of the experimental evaluation described in the paper 
+    results.ipynb ... Jupyter Notebook with the results of the experimental evaluation described in the conference paper
+    results_tist.ipynb ... Jupyter Notebook with the results of the experimental evaluation described in the journal paper
 
 ## Requirements
     Java JRE v1.8.0
